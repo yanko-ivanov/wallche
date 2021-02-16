@@ -1,15 +1,14 @@
 package tools
 
 import (
+	"io"
+	"net/http"
+	"os"
+	"strings"
 
-    "io"
-    "net/http"
-    "os"
-    "strings"
+	"github.com/disintegration/imaging"
 
-    "github.com/disintegration/imaging"
-
-    uuid "github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 func ResizeImage(path string) string {

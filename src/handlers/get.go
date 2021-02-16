@@ -18,7 +18,7 @@ func GetWallpaper(ctx *gin.Context) {
 
 	var wallpaper models.Wallpaper
 
-	fullpath, thumbPath := "", ""
+	//fullpath, thumbPath := "", ""
 
 	db.Where("url = ?", url).First(&wallpaper)
 	if wallpaper.ID == 0 {
@@ -35,14 +35,19 @@ func GetWallpaper(ctx *gin.Context) {
 
 		db.Create(&wallpaper)
 
-	} else {
-		fullpath = wallpaper.Path
-		thumbPath = wallpaper.ThumbPath
-	}
+		ctx.JSON(200, gin.H{
+			"full":  ("/img" + fullpath[strings.LastIndex(fullpath, "/"):]),
+			"thumb": ("/img" + thumbPath[strings.LastIndex(thumbPath, "/"):]),
+		})
 
-	ctx.JSON(200, gin.H{
-		"full":  ("/img" + fullpath[strings.LastIndex(fullpath, "/"):]),
-		"thumb": ("/img" + thumbPath[strings.LastIndex(thumbPath, "/"):]),
-	})
+	} else {
+		fullpath := wallpaper.Path
+		thumbPath := wallpaper.ThumbPath
+
+		ctx.JSON(200, gin.H{
+			"full":  ("/img" + fullpath[strings.LastIndex(fullpath, "/"):]),
+			"thumb": ("/img" + thumbPath[strings.LastIndex(thumbPath, "/"):]),
+		})
+	}
 
 }

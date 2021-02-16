@@ -6,11 +6,10 @@ import (
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
 
-	handlers "main/handlers"
+	api "main/api"
 )
 
 var ginLambda *ginadapter.GinLambda
@@ -26,10 +25,6 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 func init() {
 	// stdout and stderr are sent to AWS CloudWatch Logs
 	log.Printf("Gin cold start")
-	app := gin.Default()
-	app.Static("/img", "./download")
-	app.GET("/get", handlers.GetWallpaper)
-
 	ginLambda = ginadapter.New(app)
 }
 
@@ -38,9 +33,11 @@ func main() {
 	appEnv := os.Getenv("APP_ENV")
 
 	if appEnv == "development" {
+		println("running")
+		app := api.SetupRouter()
 		app.Run(":" + os.Getenv("PORT"))
 	}
 
-	lambda.Start(Handler)
+	//lambda.Start(Handler)
 
 }

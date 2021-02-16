@@ -1,8 +1,9 @@
-download/*
-!download/.gitkeep
+src/download/*
+src/!download/.gitkeep
 .idea
 /docker/db/data
 !/docker/db/data/.gitkeep
 /tmp/
 Dockerfile
 /pkg/
+src/tmp/*

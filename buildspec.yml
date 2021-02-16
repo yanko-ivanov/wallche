@@ -6,7 +6,6 @@ phases:
     runtime-versions:
       golang: 1.13
 
-
     commands:
 
     # Use go modules rather than GOPATH

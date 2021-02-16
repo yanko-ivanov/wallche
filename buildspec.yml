@@ -22,7 +22,7 @@ phases:
     commands:
 
     # Fetch all dependencies
-    - go get ./src/..
+    - cd src && go get ./..
 
     # Ensure code passes all lint tests
     - golint -set_exit_status

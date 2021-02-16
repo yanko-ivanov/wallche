@@ -20,17 +20,20 @@ phases:
   pre_build:
     commands:
 
+    # CD to proper dir
+    - cd src
+
     # Fetch all dependencies
-    - cd src && go get
+    - go get
 
     # Ensure code passes all lint tests
-    - cd src && golint -set_exit_status
+    - golint -set_exit_status
 
     # Check for common Go application problems with 'go vet'
-    - cd src && go vet .
+    - && go vet .
 
     # Run all tests included with our application
-    - cd src && go test .
+    - && go test .
 
   build:
     commands:

@@ -15,6 +15,7 @@ services:
     depends_on:
       - redis
       - db
+      - auth
     environment:
       REDIS_URL: redis:6379
     networks:
@@ -38,14 +39,26 @@ services:
     - 3306:3306
     volumes:
       - ./docker/db/data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: secretz
-      MYSQL_DATABASE: wallche
-      MYSQL_USER: wallche
-      MYSQL_PASSWORD: wallchepass
+      - ./docker/db/init:/docker-entrypoint-initdb.d
     networks:
       - backend
     env_file: .env
+
+  auth:
+    build:
+      dockerfile: ./docker/auth/Dockerfile
+      context: .
+    container_name: wallche_auth
+    working_dir: /app
+    ports:
+      - "7002:3000"
+    env_file: .env
+    depends_on:
+      - redis
+      - db
+    networks:
+      - backend
+      - default
 
 networks:
   backend:
